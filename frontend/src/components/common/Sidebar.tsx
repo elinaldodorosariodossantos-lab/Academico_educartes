@@ -10,7 +10,7 @@ import {
   FiDollarSign,
 } from 'react-icons/fi';
 import './Sidebar.css';
-import educarteLogo from '../../../educarte-logo.png';
+const educarteLogo = '/educarte-logo-profissional.png';
 import { appConfig } from '../../config/env';
 
 interface SidebarProps {

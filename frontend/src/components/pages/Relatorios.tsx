@@ -4,7 +4,7 @@ import { Card } from '../common';
 import { useAlunos } from '../../hooks/useAlunos';
 import { useTurmas } from '../../hooks/useTurmas';
 import { useFrequencia } from '../../hooks/useFrequencia';
-import educarteLogo from '../../../educarte-logo.png';
+const educarteLogo = '/educarte-logo-profissional.png';
 import './Relatorios.css';
 
 const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
