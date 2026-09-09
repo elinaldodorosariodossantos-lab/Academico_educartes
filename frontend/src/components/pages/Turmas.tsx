@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Button, Modal } from '../common';
-import { FiPlus, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiSearch } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { useAlunos } from '../../hooks/useAlunos';
 import { useTurmas } from '../../hooks/useTurmas';
 import type { Turma } from '../../types';
 import './Turmas.css';
@@ -23,6 +25,15 @@ export const Turmas: React.FC = () => {
     updateTurma,
     deleteTurma,
   } = useTurmas();
+
+  const { alunos, isLoading: loadingAlunos, error: alunosError } = useAlunos();
+  const [pesquisa, setPesquisa] = useState('');
+  const [selectedTurma, setSelectedTurma] = useState<Turma | null>(null);
+  const normalizar = (valor: string) => valor.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
+  const turmasFiltradas = turmas.filter(turma => normalizar(turma.nome).includes(normalizar(pesquisa)));
+  const alunosDaTurma = (turma: Turma) => alunos
+    .filter(aluno => aluno.turma === turma.id || aluno.turma === turma.nome)
+    .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
 
   const [isModalOpen, setIsModalOpen] =
     useState(false);
@@ -157,23 +168,32 @@ export const Turmas: React.FC = () => {
         </Button>
       </div>
 
+      <label className="turmas-search">
+        <FiSearch size={20} aria-hidden="true" />
+        <input type="search" aria-label="Pesquisar turma" placeholder="Pesquisar turma pelo nome..."
+          value={pesquisa} onChange={event => setPesquisa(event.target.value)} />
+      </label>
+      {alunosError && <p role="alert">Não foi possível carregar os alunos: {alunosError}</p>}
       <div className="turmas-grid">
         {isLoading ? (
           <p className="text-muted">
             Carregando turmas...
           </p>
-        ) : turmas.length === 0 ? (
+        ) : turmasFiltradas.length === 0 ? (
           <p className="text-muted">
-            Nenhuma turma cadastrada
+            {pesquisa ? 'Nenhuma turma encontrada para esta pesquisa.' : 'Nenhuma turma cadastrada'}
           </p>
         ) : (
-          turmas.map((turma) => (
+          turmasFiltradas.map((turma) => (
             <Card
               key={turma.id}
               hoverable
               padding="lg"
               className="turma-card"
             >
+              <button type="button" className="turma-open-button"
+                aria-label={`Ver alunos matriculados em ${turma.nome}`}
+                onClick={() => setSelectedTurma(turma)} />
               <div className="turma-card-header">
                 <div>
                   <h3>{turma.nome}</h3>
@@ -229,7 +249,7 @@ export const Turmas: React.FC = () => {
 
                   <p>
                     <strong>Alunos:</strong>{' '}
-                    {turma.quantidadeAlunos}
+                    {loadingAlunos ? 'Carregando...' : alunosError ? 'Indisponível' : alunosDaTurma(turma).length}
                   </p>
                 </div>
 
@@ -238,6 +258,27 @@ export const Turmas: React.FC = () => {
           ))
         )}
       </div>
+
+      <Modal isOpen={Boolean(selectedTurma)} onClose={() => setSelectedTurma(null)}
+        title={selectedTurma ? `Alunos — ${selectedTurma.nome}` : 'Alunos matriculados'} size="md">
+        {loadingAlunos ? <p>Carregando alunos...</p> : alunosError ? (
+          <p role="alert">Não foi possível carregar os alunos. Tente novamente.</p>
+        ) : selectedTurma && (
+          <>
+            <p className="text-muted">{alunosDaTurma(selectedTurma).length} aluno(s) matriculado(s)</p>
+            {alunosDaTurma(selectedTurma).length === 0 ? <p>Nenhum aluno matriculado nesta turma.</p> : (
+              <ul className="turma-students">
+                {alunosDaTurma(selectedTurma).map(aluno => (
+                  <li key={aluno.id}>
+                    <Link to={`/alunos/${aluno.id}`}>{aluno.nome}</Link>
+                    <span>{aluno.status}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
+      </Modal>
 
       <Modal
         isOpen={isModalOpen}

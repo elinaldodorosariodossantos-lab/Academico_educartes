@@ -226,3 +226,27 @@ body.dark-mode .checkbox-label span {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+.turmas-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 16px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  color: var(--gray-500);
+}
+.turmas-search input { width: 100%; min-width: 0; border: 0; background: transparent; padding: 12px 0; color: inherit; font: inherit; }
+.turmas-search:focus-within { outline: 2px solid var(--primary-color); outline-offset: 2px; }
+.turmas-search input:focus { outline: none; box-shadow: none; }
+.turma-card { position: relative; }
+.turma-open-button { position: absolute; inset: 0; z-index: 1; border: 0; border-radius: inherit; background: transparent; cursor: pointer; }
+.turma-open-button:focus-visible { outline: 3px solid var(--primary-color); outline-offset: 3px; }
+.turma-actions { position: relative; z-index: 2; }
+.turma-students { list-style: none; margin: 16px 0 0; padding: 0; }
+.turma-students li { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--gray-200); }
+.turma-students a { color: var(--primary-color); font-weight: 600; overflow-wrap: anywhere; }
+.turma-students span { color: var(--gray-500); font-size: 12px; flex-shrink: 0; }
+body.dark-mode .turmas-search { background: var(--dark-surface); border-color: var(--dark-border); color: var(--dark-text); }
+body.dark-mode .turma-students li { border-color: var(--dark-border); }
+body.dark-mode .turma-students span { color: var(--gray-400); }
