@@ -1,6 +1,6 @@
-# EDUKAR XP — Sistema de Gestão Acadêmica
+# EDUCARTES — Sistema de Gestão Acadêmica
 
-O **EDUKAR XP** é uma plataforma web para organizar a rotina acadêmica e financeira de escolas e cursos. O sistema reúne alunos, responsáveis, turmas, horários, frequência, relatórios e mensalidades em uma interface moderna, responsiva e com temas claro e escuro.
+O **EDUCARTES** é uma plataforma web para organizar a rotina acadêmica e financeira de escolas e cursos. O sistema reúne alunos, responsáveis, turmas, horários, frequência, relatórios e mensalidades em uma interface moderna, responsiva e com temas claro e escuro.
 
 Todos os dados são armazenados exclusivamente no **Supabase**, que atua como backend e banco de dados da aplicação.
 
