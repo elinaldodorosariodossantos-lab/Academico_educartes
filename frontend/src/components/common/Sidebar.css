@@ -54,7 +54,7 @@ body.dark-mode .sidebar {
 
 .sidebar-header {
   position: relative;
-  padding: 10px 20px;
+  padding: 6px 8px;
   background: linear-gradient(180deg, rgba(37, 99, 235, 0.055) 0%, transparent 100%);
   border-bottom: 1px solid var(--gray-200);
   flex-shrink: 0;
@@ -79,10 +79,8 @@ body.dark-mode .sidebar-header {
 
 .sidebar-logo {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .sidebar-brand-image {
@@ -93,36 +91,6 @@ body.dark-mode .sidebar-header {
   object-fit: contain;
   object-position: center;
   border-radius: 12px;
-}
-
-.sidebar-brand-subtitle {
-  display: block;
-  align-items: center;
-  color: var(--gray-600);
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  line-height: 1.5;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.sidebar-brand-subtitle::before,
-.sidebar-brand-subtitle::after {
-  content: none;
-  width: 18px;
-  height: 1px;
-  margin: 0 8px;
-  background-color: var(--gray-300);
-}
-
-body.dark-mode .sidebar-brand-subtitle {
-  color: var(--gray-400);
-}
-
-body.dark-mode .sidebar-brand-subtitle::before,
-body.dark-mode .sidebar-brand-subtitle::after {
-  background-color: var(--dark-border);
 }
 
 .sidebar-nav {
