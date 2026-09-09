@@ -54,7 +54,7 @@ body.dark-mode .sidebar {
 
 .sidebar-header {
   position: relative;
-  padding: 16px 22px 15px;
+  padding: 18px 20px 16px;
   background: linear-gradient(180deg, rgba(37, 99, 235, 0.055) 0%, transparent 100%);
   border-bottom: 1px solid var(--gray-200);
   flex-shrink: 0;
@@ -81,33 +81,35 @@ body.dark-mode .sidebar-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 7px;
+  gap: 12px;
   justify-content: center;
 }
 
 .sidebar-brand-image {
   display: block;
-  width: 100%;
-  max-width: 184px;
-  height: auto;
+  width: 144px;
+  max-width: 100%;
+  height: 144px;
   object-fit: contain;
+  object-position: center;
+  border-radius: 12px;
 }
 
 .sidebar-brand-subtitle {
-  display: inline-flex;
+  display: block;
   align-items: center;
   color: var(--gray-600);
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  line-height: 1;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
   text-align: center;
   text-transform: uppercase;
 }
 
 .sidebar-brand-subtitle::before,
 .sidebar-brand-subtitle::after {
-  content: '';
+  content: none;
   width: 18px;
   height: 1px;
   margin: 0 8px;
