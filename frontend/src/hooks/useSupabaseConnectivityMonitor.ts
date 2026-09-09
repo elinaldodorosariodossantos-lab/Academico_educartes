@@ -5,8 +5,8 @@ import { supabase } from '../lib/supabase';
 type ConnectionStatus = 'connected' | 'disconnected' | null;
 
 /**
- * Verifica a conectividade sem ler registros nem alterar o banco.
- * O monitor é opt-in e só permanece ativo enquanto a aplicação está aberta.
+ * Verifica a leitura de no máximo um identificador, sem alterar o banco.
+ * Só permanece ativo enquanto a aplicação está aberta e visível.
  */
 export function useSupabaseConnectivityMonitor() {
   useEffect(() => {
@@ -34,7 +34,7 @@ export function useSupabaseConnectivityMonitor() {
       try {
         const { error } = await supabase
           .from('horarios')
-          .select('id', { head: true })
+          .select('id')
           .limit(1)
           .abortSignal(activeController.signal);
 

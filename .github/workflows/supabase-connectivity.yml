@@ -1,0 +1,36 @@
+name: Verificar Supabase
+
+on:
+  schedule:
+    - cron: '23 12 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  connectivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Consultar banco sem alterar dados
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLIC_KEY: ${{ secrets.SUPABASE_PUBLIC_KEY }}
+        shell: bash
+        run: |
+          node --input-type=module <<'JS'
+          const url = process.env.SUPABASE_URL?.trim();
+          const key = process.env.SUPABASE_PUBLIC_KEY?.trim();
+          if (!url || !key) throw new Error('Configure os secrets SUPABASE_URL e SUPABASE_PUBLIC_KEY no GitHub.');
+          const endpoint = new URL('/rest/v1/horarios?select=id&limit=1', url);
+          if (endpoint.protocol !== 'https:') throw new Error('SUPABASE_URL deve usar HTTPS.');
+          const response = await fetch(endpoint, {
+            headers: { apikey: key },
+            signal: AbortSignal.timeout(15000),
+          });
+          if (!response.ok) throw new Error(`Falha na consulta ao Supabase: HTTP ${response.status}`);
+          const data = await response.json();
+          if (!Array.isArray(data)) throw new Error('Resposta inesperada do Supabase.');
+          console.log('Conexão com o banco confirmada. Nenhum dado alterado.');
+          JS
