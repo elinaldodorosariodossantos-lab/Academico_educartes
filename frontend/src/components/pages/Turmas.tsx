@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Button, Modal } from '../common';
-import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiUsers, FiArrowUpRight } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiUsers, FiArrowUpRight, FiEye } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useAlunos } from '../../hooks/useAlunos';
 import { useTurmas } from '../../hooks/useTurmas';
@@ -205,6 +205,15 @@ export const Turmas: React.FC = () => {
                 </div>
 
                 <div className="turma-actions">
+                  <button
+                    type="button"
+                    className="action-btn"
+                    onClick={() => { setPesquisaAluno(''); setSelectedTurma(turma); }}
+                    title="Ver alunos matriculados"
+                    aria-label={`Ver alunos matriculados em ${turma.nome}`}
+                  >
+                    <FiEye size={18} aria-hidden="true" />
+                  </button>
                   <button
                     className="action-btn"
                     onClick={() =>
