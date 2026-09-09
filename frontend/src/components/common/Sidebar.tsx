@@ -36,6 +36,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
         <div className="sidebar-header">
           <div className="sidebar-logo">
             <img src={educarteLogo} alt="Educarte — Escola de Reforço" className="sidebar-brand-image" />
+            <span className="sidebar-brand-subtitle">Sistema Acadêmico</span>
           </div>
         </div>
 
