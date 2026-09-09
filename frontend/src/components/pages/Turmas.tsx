@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Button, Modal } from '../common';
-import { FiPlus, FiEdit2, FiTrash2, FiSearch } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiUsers, FiArrowUpRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useAlunos } from '../../hooks/useAlunos';
 import { useTurmas } from '../../hooks/useTurmas';
@@ -29,6 +29,7 @@ export const Turmas: React.FC = () => {
   const { alunos, isLoading: loadingAlunos, error: alunosError } = useAlunos();
   const [pesquisa, setPesquisa] = useState('');
   const [selectedTurma, setSelectedTurma] = useState<Turma | null>(null);
+  const [pesquisaAluno, setPesquisaAluno] = useState('');
   const normalizar = (valor: string) => valor.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
   const turmasFiltradas = turmas.filter(turma => normalizar(turma.nome).includes(normalizar(pesquisa)));
   const alunosDaTurma = (turma: Turma) => alunos
@@ -193,7 +194,7 @@ export const Turmas: React.FC = () => {
             >
               <button type="button" className="turma-open-button"
                 aria-label={`Ver alunos matriculados em ${turma.nome}`}
-                onClick={() => setSelectedTurma(turma)} />
+                onClick={() => { setPesquisaAluno(''); setSelectedTurma(turma); }} />
               <div className="turma-card-header">
                 <div>
                   <h3>{turma.nome}</h3>
@@ -265,17 +266,33 @@ export const Turmas: React.FC = () => {
           <p role="alert">Não foi possível carregar os alunos. Tente novamente.</p>
         ) : selectedTurma && (
           <>
-            <p className="text-muted">{alunosDaTurma(selectedTurma).length} aluno(s) matriculado(s)</p>
+            <div className="roster-summary">
+              <div className="roster-symbol"><FiUsers size={24} aria-hidden="true" /></div>
+              <div className="roster-summary-copy">
+                <strong>{alunosDaTurma(selectedTurma).length} {alunosDaTurma(selectedTurma).length === 1 ? 'aluno matriculado' : 'alunos matriculados'}</strong>
+                <p>{selectedTurma.professor || 'Professor não informado'}{selectedTurma.horario ? ` · ${selectedTurma.horario}` : ''}</p>
+              </div>
+            </div>
+            <label className="turmas-search roster-search">
+              <FiSearch size={18} aria-hidden="true" />
+              <input type="search" aria-label="Pesquisar aluno nesta turma" placeholder="Buscar aluno pelo nome..."
+                value={pesquisaAluno} onChange={event => setPesquisaAluno(event.target.value)} />
+            </label>
             {alunosDaTurma(selectedTurma).length === 0 ? <p>Nenhum aluno matriculado nesta turma.</p> : (
-              <ul className="turma-students">
-                {alunosDaTurma(selectedTurma).map(aluno => (
+              <ul className="roster-list">
+                {alunosDaTurma(selectedTurma).filter(aluno => normalizar(aluno.nome).includes(normalizar(pesquisaAluno))).map(aluno => (
                   <li key={aluno.id}>
-                    <Link to={`/alunos/${aluno.id}`}>{aluno.nome}</Link>
-                    <span>{aluno.status}</span>
+                    <Link className="roster-student" to={`/alunos/${aluno.id}`}>
+                      <span className="roster-avatar" aria-hidden="true">{aluno.nome.trim().split(/\s+/).filter(Boolean).map(parte => parte[0]).filter((_, index, letras) => index === 0 || index === letras.length - 1).join('').toLocaleUpperCase('pt-BR')}</span>
+                      <span className="roster-name"><strong>{aluno.nome}</strong><small>Ver cadastro do aluno</small></span>
+                      <span className={`roster-status ${aluno.status === 'Ativo' ? 'is-active' : 'is-inactive'}`}>{aluno.status}</span>
+                      <FiArrowUpRight className="roster-arrow" size={18} aria-hidden="true" />
+                    </Link>
                   </li>
                 ))}
               </ul>
             )}
+            {pesquisaAluno && alunosDaTurma(selectedTurma).length > 0 && !alunosDaTurma(selectedTurma).some(aluno => normalizar(aluno.nome).includes(normalizar(pesquisaAluno))) && <p className="roster-empty" role="status">Nenhum aluno encontrado para esta pesquisa.</p>}
           </>
         )}
       </Modal>
