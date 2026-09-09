@@ -54,7 +54,7 @@ body.dark-mode .sidebar {
 
 .sidebar-header {
   position: relative;
-  padding: 6px 8px;
+  padding: 10px 20px;
   background: linear-gradient(180deg, rgba(37, 99, 235, 0.055) 0%, transparent 100%);
   border-bottom: 1px solid var(--gray-200);
   flex-shrink: 0;
@@ -80,7 +80,7 @@ body.dark-mode .sidebar-header {
 .sidebar-logo {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .sidebar-brand-image {
