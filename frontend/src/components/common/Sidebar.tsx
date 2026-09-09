@@ -10,7 +10,7 @@ import {
   FiDollarSign,
 } from 'react-icons/fi';
 import './Sidebar.css';
-import edukarLogo from '../../../EDUKARXP-horizontal.png';
+import educarteLogo from '../../../educarte-logo.png';
 import { appConfig } from '../../config/env';
 
 interface SidebarProps {
@@ -35,7 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
-            <img src={edukarLogo} alt="Edukar XP" className="sidebar-brand-image" />
+            <img src={educarteLogo} alt="Educarte — Escola de Reforço" className="sidebar-brand-image" />
             <span className="sidebar-brand-subtitle">Sistema Acadêmico Escolar</span>
           </div>
         </div>
@@ -62,7 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
         <div className="sidebar-footer">
           <div className="sidebar-info">
             <p className="text-small text-muted">Versão {appConfig.version}</p>
-            <p className="text-small text-muted">© 2026 Edukar XP</p>
+            <p className="text-small text-muted">© 2026 Educarte</p>
           </div>
         </div>
       </aside>

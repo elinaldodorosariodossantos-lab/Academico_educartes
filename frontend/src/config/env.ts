@@ -11,7 +11,7 @@ const readInterval = (value: string | undefined, fallback: number) => {
 };
 
 export const appConfig = Object.freeze({
-  name: readEnv(import.meta.env.VITE_APP_NAME, 'Edukar XP'),
+  name: readEnv(import.meta.env.VITE_APP_NAME, 'Educarte'),
   version: readEnv(import.meta.env.VITE_APP_VERSION, '1.0.0'),
   supabaseConnectivityMonitor: Object.freeze({
     enabled: readBoolean(import.meta.env.VITE_SUPABASE_CONNECTIVITY_MONITOR_ENABLED, false),

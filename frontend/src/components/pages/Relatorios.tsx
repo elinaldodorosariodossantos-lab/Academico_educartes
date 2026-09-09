@@ -4,7 +4,7 @@ import { Card } from '../common';
 import { useAlunos } from '../../hooks/useAlunos';
 import { useTurmas } from '../../hooks/useTurmas';
 import { useFrequencia } from '../../hooks/useFrequencia';
-import edukarLogo from '../../../EDUKARXP-horizontal.png';
+import educarteLogo from '../../../educarte-logo.png';
 import './Relatorios.css';
 
 const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -29,7 +29,7 @@ const escapeHtml = (valor: unknown) => String(valor ?? '')
 let logoDataUrlCache: string | null = null;
 const carregarLogoDataUrl = async () => {
   if (logoDataUrlCache) return logoDataUrlCache;
-  const response = await fetch(edukarLogo);
+  const response = await fetch(educarteLogo);
   const blob = await response.blob();
   logoDataUrlCache = await new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
@@ -133,7 +133,10 @@ export const Relatorios: React.FC = () => {
 
     doc.setFillColor(248, 250, 252); doc.rect(0, 0, pageWidth, 142, 'F');
     doc.setFillColor(37, 99, 235); doc.rect(0, 0, 8, 142, 'F');
-    doc.addImage(logoDataUrl, 'PNG', 38, 22, 132, 43);
+    const logoProperties = doc.getImageProperties(logoDataUrl);
+    const logoHeight = 58;
+    const logoWidth = logoHeight * logoProperties.width / logoProperties.height;
+    doc.addImage(logoDataUrl, 38 + (132 - logoWidth) / 2, 14, logoWidth, logoHeight);
     doc.setTextColor(15, 23, 42); doc.setFont('helvetica', 'bold'); doc.setFontSize(19);
     doc.text('Relatório de Frequência', 196, 39);
     doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 116, 139); doc.setFontSize(9);
@@ -168,7 +171,7 @@ export const Relatorios: React.FC = () => {
       didDrawPage: ({ pageNumber }) => {
         doc.setDrawColor(226, 232, 240); doc.line(38, pageHeight - 25, pageWidth - 38, pageHeight - 25);
         doc.setTextColor(100, 116, 139); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
-        doc.text('Edukar XP • Sistema Acadêmico Escolar', 38, pageHeight - 12);
+        doc.text('Educarte • Sistema Acadêmico Escolar', 38, pageHeight - 12);
         doc.text(`Página ${pageNumber}`, pageWidth - 38, pageHeight - 12, { align: 'right' });
       },
     });
@@ -190,7 +193,7 @@ export const Relatorios: React.FC = () => {
     </style></head><body><table class="header"><tr><td><img class="logo" src="${logoDataUrl}"></td><td><h1>Relatório de Frequência</h1><div class="muted">Período: ${escapeHtml(periodo)} &nbsp; | &nbsp; Escopo: ${escapeHtml(escopo === 'GERAL' ? 'Todos' : escopo)}</div></td></tr></table>
     <table class="summary"><tr><td><small>REGISTROS</small><strong>${frequenciasFiltradas.length}</strong></td><td><small>PRESENÇAS</small><strong>${totalPresencas}</strong></td><td><small>FALTAS</small><strong>${totalFaltas}</strong></td><td><small>FREQUÊNCIA</small><strong>${formatarPercentual(frequenciaMedia)}</strong></td></tr></table>
     <table class="data"><thead><tr><th>Data</th><th>Turma</th><th>Aluno</th><th>Presença</th><th>Professor</th><th>Conteúdo ministrado</th></tr></thead><tbody>${linhas}</tbody></table>
-    <div class="footer">Edukar XP • Sistema Acadêmico Escolar — Documento emitido em ${new Date().toLocaleString('pt-BR')}</div></body></html>`;
+    <div class="footer">Educarte • Sistema Acadêmico Escolar — Documento emitido em ${new Date().toLocaleString('pt-BR')}</div></body></html>`;
     baixarArquivo(new Blob([html], { type: 'application/msword' }), `FREQUENCIA_${escopo}_${mes}-${ano}.doc`);
   };
 
